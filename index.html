@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+
+        .active,
+        .accordion:hover {
+            background-color: #ccc;
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <button class="accordion"><p id="water"></p></button>
+    <div class="panel">
+        <p id="description0"></p>
+    </div>
+
+    <button class="accordion"><p id="fire"></p></button>
+    <div class="panel">
+        <p id="description1"></p>
+    </div>
+
+    <button class="accordion"><p id="grass"></p></button>
+    <div class="panel">
+        <p id="description2"></p>
+    </div>
+
+
+    <!-- PARSE XML INTO JS -->
+    <script>
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                myFunction(this);
+            }
+        };
+        xhttp.open("GET", "pokemon.xml", true);
+        xhttp.send();
+
+        function myFunction(xml) {
+            var xmlDoc = xml.responseXML;
+            document.getElementById("water").innerHTML =
+                xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+
+            document.getElementById("description0").innerHTML =
+                xmlDoc.getElementsByTagName("description")[0].childNodes[0].nodeValue;
+
+            document.getElementById("fire").innerHTML =
+                xmlDoc.getElementsByTagName("title")[1].childNodes[0].nodeValue;
+
+            document.getElementById("description1").innerHTML =
+                xmlDoc.getElementsByTagName("description")[1].childNodes[0].nodeValue;
+
+
+            document.getElementById("grass").innerHTML =
+                xmlDoc.getElementsByTagName("title")[2].childNodes[0].nodeValue;
+
+            document.getElementById("description2").innerHTML =
+                xmlDoc.getElementsByTagName("description")[2].childNodes[0].nodeValue;
+        }
+
+    </script>
+
+    <!-- ACCORDION JS -->
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
